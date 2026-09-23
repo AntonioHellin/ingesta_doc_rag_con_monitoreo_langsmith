@@ -12,14 +12,25 @@ from openevals.llm import create_llm_as_judge
 
 
 
-# Wrap OpenAI client for LangSmith tracing
-openai_client = wrappers.wrap_openai(openai.OpenAI())
+# Load environment variables if .env file exists
+_env_path = Path(__file__).parent / ".env"
+if _env_path.exists():
+    load_dotenv(_env_path)
 
-def check_environment():
+_openai_client = None
+
+def get_openai_client():
+    """Get or initialize the wrapped OpenAI client for LangSmith tracing."""
+    global _openai_client
+    if _openai_client is None:
+        _openai_client = wrappers.wrap_openai(openai.OpenAI())
+    return _openai_client
+
+def check_environment() -> bool:
+    """Check if all required environment variables are set."""
     env_path = Path(__file__).parent / ".env"
     if env_path.exists():
         load_dotenv(env_path)
-    """Check if all required environment variables are set."""
     required_vars = ["LANGSMITH_API_KEY", "OPENAI_API_KEY", "LANGSMITH_TRACING"]
     missing_vars = [var for var in required_vars if not os.getenv(var)]
     
@@ -92,7 +103,8 @@ Respond with CORRECT or INCORRECT:
 Grade:"""
     
     try:
-        response = openai_client.chat.completions.create(
+        client = get_openai_client()
+        response = client.chat.completions.create(
             model="gpt-4o-mini",
             temperature=0,
             messages=[
@@ -128,7 +140,8 @@ def my_chatbot(question: str) -> str:
     """
     instructions = "Respond to the user's question in a short, concise manner (one short sentence)."
     
-    response = openai_client.chat.completions.create(
+    client = get_openai_client()
+    response = client.chat.completions.create(
         model="gpt-4o-mini",
         temperature=0,
         messages=[
