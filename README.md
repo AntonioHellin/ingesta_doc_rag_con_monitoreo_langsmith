@@ -129,7 +129,3 @@ The script will:
 4. Output a direct link to the LangSmith experiment dashboard for analysis.
 
 ---
-
-## License
-
-This project is licensed under the MIT License. See [LICENSE](LICENSE) for details if applicable.
