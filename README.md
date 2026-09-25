@@ -57,8 +57,8 @@ A production observability and evaluation suite for Retrieval-Augmented Generati
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/AntonioHellin/ingesta_doc_rag_con_monitoreo_langsmith.git
-   cd ingesta_doc_rag_con_monitoreo_langsmith
+   git clone https://github.com/AntonioHellin/langsmith-rag-evals.git
+   cd langsmith-rag-evals
    ```
 
 2. **Create and activate a virtual environment**:
